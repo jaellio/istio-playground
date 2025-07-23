@@ -1,0 +1,15 @@
+# Do I need to apply this in each cluster?
+# Do I need to apply the network or global label?
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  labels:
+    istio.io/waypoint-for: service
+  name: waypoint-helloworld
+  namespace: sample
+spec:
+  gatewayClassName: istio-waypoint
+  listeners:
+  - name: mesh
+    port: 15008
+    protocol: HBONE

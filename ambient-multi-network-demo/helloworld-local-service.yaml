@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: helloworld-local
+  namespace: sample
+  labels:
+    app: helloworld
+    service: helloworld-local
+spec:
+  ports:
+  - port: 5000
+    name: http
+  selector:
+    app: helloworld

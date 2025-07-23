@@ -1,0 +1,10 @@
+profile: ambient
+global:
+  hub: jaelliocr.azurecr.io
+  tag: testmc2
+  variant: ""
+  imagePullPolicy: Always
+  meshID: mesh1
+  network: network1
+  multiCluster:
+    clusterName: cluster-a

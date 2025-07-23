@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: helloworld-waypoint
+  namespace: sample
+  labels:
+    istio.io/use-waypoint: waypoint-helloworld
+    # TODO: Does this service need to be global or just the waypoint itself?
+    istio.io/global: ""
+    app: helloworld
+    service: helloworld-waypoint
+spec:
+  ports:
+  - port: 5000
+    name: http
+  selector:
+    app: helloworld
+ 

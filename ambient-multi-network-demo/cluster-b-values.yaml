@@ -1,0 +1,12 @@
+profile: ambient
+global:
+  hub: jaelliocr.azurecr.io
+  tag: testmc2
+  variant: ""
+  imagePullPolicy: Always
+  # TODO: What is the significance of the meshID for multi
+  # cluster ambient are we still using a single mesh/mesh ID?
+  meshID: mesh1
+  network: network2
+  multiCluster:
+    clusterName: cluster-b
