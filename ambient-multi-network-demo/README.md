@@ -72,13 +72,15 @@ kubectl create secret generic cacerts -n istio-system \
       --from-file=$CLUSTER_A_NAME/ca-cert.pem \
       --from-file=$CLUSTER_A_NAME/ca-key.pem \
       --from-file=$CLUSTER_A_NAME/root-cert.pem \
-      --from-file=$CLUSTER_A_NAME/cert-chain.pem
+      --from-file=$CLUSTER_A_NAME/cert-chain.pem \
+      --context $CLUSTER_A_NAME
 
 kubectl create secret generic cacerts -n istio-system \
       --from-file=$CLUSTER_B_NAME/ca-cert.pem \
       --from-file=$CLUSTER_B_NAME/ca-key.pem \
       --from-file=$CLUSTER_B_NAME/root-cert.pem \
-      --from-file=$CLUSTER_B_NAME/cert-chain.pem
+      --from-file=$CLUSTER_B_NAME/cert-chain.pem \
+      --context $CLUSTER_B_NAME
 ```
 
 ### Create Remote Secrets
