@@ -16,13 +16,15 @@ export ACR_NAME="myContainerRegistry"
 export LOCATION="eastus"
 export CLUSTER_A_NAME="cluster-a"
 export CLUSTER_B_NAME="cluster-b"
-
+```
+```bash
 # Step 2: Create the resource group
 az group create --name $RESOURCE_GROUP --location $LOCATION
 
 # Step 3: Create the ACR
 az acr create --resource-group $RESOURCE_GROUP --name $ACR_NAME --sku Basic
-
+```
+```bash
 # Step 4: Create the AKS clusters and attach ACR
 az aks create \
   --resource-group $RESOURCE_GROUP \
@@ -47,8 +49,9 @@ az aks create \
 # Step 5: Connect to the AKS clusters
 az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_A_NAME
 az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_B_NAME
-
-# Step 6: Download the istioctl
+```
+```bash
+# Step 6: Download istioctl
 container_id=$(docker create gcr.io/istio-testing/istioctl:1.27-dev)
 docker cp $container_id:/usr/local/bin/istioctl .
 # Step 7: Create istio-system namespace in each cluster
@@ -62,6 +65,8 @@ Reference: https://istio.io/latest/docs/tasks/security/cert-management/plugin-ca
 # Step 8: Create the root and intermediate certificates
 wget https://raw.githubusercontent.com/istio/istio/release-1.21/tools/certs/common.mk -O common.mk
 wget https://raw.githubusercontent.com/istio/istio/release-1.21/tools/certs/Makefile.selfsigned.mk -O Makefile.selfsigned.mk
+```
+```bash
 # Step 9: Generate root CA
 make -f Makefile.selfsigned.mk root-ca
 # Step 10: Generate intermediate CAs
@@ -149,7 +154,7 @@ kubectl --context="${CLUSTER_B_NAME}" label namespace istio-system topology.isti
 # Step 18: Deploy helloworld app in each cluster
 kubectl apply -f ./cluster-a-helloworld.yaml --context=$CLUSTER_A_NAME
 kubectl apply -f ./cluster-b-helloworld.yaml --context=$CLUSTER_B_NAME
-
+```
 ### Deploy helloworld-local services
 ```bash
 # Step 18: Deploy local services in each cluster
