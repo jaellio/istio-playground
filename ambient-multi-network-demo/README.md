@@ -94,9 +94,9 @@ istioctl create-remote-secret \
     kubectl apply -f - --context=$CLUSTER_B_NAME
 
 istioctl create-remote-secret \
-    --context=$CLUSTER_A_NAME \
-    --name=$CLUSTER_A_NAME | \
-    kubectl apply -f - --context=$CLUSTER_B_NAME
+    --context=$CLUSTER_B_NAME \
+    --name=$CLUSTER_B_NAME | \
+    kubectl apply -f - --context=$CLUSTER_A_NAME
 ```
 
 ### Install Gateway API CRDs
