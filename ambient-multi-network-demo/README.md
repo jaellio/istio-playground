@@ -187,5 +187,39 @@ kubectl apply -f ./curl.yaml --context=$CLUSTER_A_NAME
 kubectl apply -f ./curl.yaml --context=$CLUSTER_B_NAME
 ```
 
+### Enable ambient in the sample namespace
+```bash
+# Step 22: Enable ambient in the sample namespace
+kubectl label namespace sample istio.io/dataplane-mode=ambient --context=$CLUSTER_A_NAME
+kubectl label namespace sample istio.io/dataplane-mode=ambient --context=$CLUSTER_B_NAME
+```
+
 ### Test the Setup
 
+### Curl helloworld local
+
+All request to the local helloworld service will be routed to the local service in the same cluster. The backing app is helloworld-v1.
+```bash
+# Step 23: Test local helloworld service
+kubectl exec -it $(kubectl get pods -l app=curl -o jsonpath="{.items[0].metadata.name}" -n sample --context $CLUSTER_A_NAME) \
+  -n sample --context $CLUSTER_A_NAME -- \
+  /bin/sh -c 'for i in $(seq 1 10); do curl -s http://helloworld-local.sample.svc.cluster.local:5000/hello; done'
+```
+
+### Curl helloworld global
+All requests to the global helloworld service will be routed to the global service on either cluster. The backing app is helloworld-v2 or helloworld-v1.
+```bash
+# Step 24: Test global helloworld service
+kubectl exec -it $(kubectl get pods -l app=curl -o jsonpath="{.items[0].metadata.name}" -n sample --context $CLUSTER_A_NAME) \
+  -n sample --context $CLUSTER_A_NAME -- \
+  /bin/sh -c 'for i in $(seq 1 10); do curl -s http://helloworld-global.sample.svc.cluster.local:5000/hello; done'
+```
+
+### Curl helloworld waypoint
+All requests to the waypoint helloworld service will be routed to the waypoint service on either cluster. By default the requests to services using waypoints will prefer local services if available. To force the request to go through the east-west gateway we have only deployed the global waypoint service on cluster B. The backing app is helloworld-v2 on cluster B.
+```bash
+# Step 25: Test waypoint helloworld service
+kubectl exec -it $(kubectl get pods -l app=curl -o jsonpath="{.items[0].metadata.name}" -n sample --context $CLUSTER_A_NAME) \
+  -n sample --context $CLUSTER_A_NAME -- \
+  /bin/sh -c 'for i in $(seq 1 10); do curl -s http://helloworld-waypoint.sample.svc.cluster.local:5000/hello; done'
+```
